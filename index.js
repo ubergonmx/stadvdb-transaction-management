@@ -1,17 +1,14 @@
-"use strict"
-import "dotenv/config";
-import express from 'express';
-import exphbs, { engine } from 'express-handlebars';
-import mysql from 'mysql';
-import morgan from 'morgan';
-import path from 'path';
+require('dotenv').config();
+const express = require('express');
+const { engine } = require('express-handlebars');
+const mysql = require('mysql');
+const morgan = require('morgan');
+const path = require('path');
 
 // create express app
 const app = express();
 
 const port = process.env.PORT || 3000;
-
-const __dirname = path.resolve();
 
 // set json and urlencoded
 app.use(express.json());
