@@ -1,5 +1,5 @@
 "use strict"
-import "dotenv/config";
+import dotenv from 'dotenv';
 import express from 'express';
 import exphbs, { engine } from 'express-handlebars';
 import mysql from 'mysql';
