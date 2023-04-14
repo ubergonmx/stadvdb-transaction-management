@@ -1,4 +1,3 @@
-"use strict"
 import dotenv from 'dotenv';
 import express from 'express';
 import exphbs, { engine } from 'express-handlebars';
