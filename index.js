@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const { engine } = require('express-handlebars');
-const mysql = require('mysql');
 const morgan = require('morgan');
 const path = require('path');
 
