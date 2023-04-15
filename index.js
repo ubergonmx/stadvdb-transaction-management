@@ -3,6 +3,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const morgan = require('morgan');
 const path = require('path');
+const { connectDB } = require('./model/db');
 
 // create express app
 const app = express();
@@ -29,6 +30,9 @@ app.use((req, res) => {
     res.status(404).render('404');
     }
 );
+
+// connect to database
+connectDB();
 
 // start express server
 app.listen(port, () => {
