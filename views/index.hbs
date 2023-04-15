@@ -1,157 +1,137 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle collapsed"
+        data-toggle="collapse"
+        data-target="#navbar"
+        aria-expanded="false"
+        aria-controls="navbar"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">IMDB</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right"></form>
+    </div>
+  </div>
+</nav>
 
-       <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">IMDB</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-
-          </form>
-        </div>
-      </div>
-    </nav>
-
-    <!--  -->
-        <div class="container mt-4">
-          <h1 class="page-header">Movie Database</h1>
-          <!-- here -->
-          <div>
-            <!-- Handlebars template for search bar -->
-            <script id="search-template" type="text/x-handlebars-template">
-              <form>
-                <div class="input-group">
-                  <div class="col-md-10">
-                    <input type="text" class="form-control" placeholder="{{placeholder}}" aria-label="Search" aria-describedby="search-addon">
+<div class="container mt-4">
+  <h1 class="page-header">Movie Database</h1>
+  <div>
+    <!-- Handlebars template for search bar -->
+    <script id="search-template" type="text/x-handlebars-template">
+      <form>
+        <div class='input-group'>
+          <div class='col-md-10'>
+            <input
+              type='text'
+              class='form-control'
+              placeholder='{{placeholder}}'
+              aria-label='Search'
+              aria-describedby='search-addon'
+            />
+          </div>
+          <div class='col-md-2'>
+            <button class='btn btn-outline-secondary pr-3' type='submit' id='search-addon'>{{buttonText}}</button>
+          </div>
+          <div class='col-md-3'>
+            <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Add</button>
+            <div class='modal fade' id='myModal'>
+              <div class='modal-dialog'>
+                <div class='modal-content'>
+                  <div class='modal-header'>
+                    <h4 class='modal-title'>Add Movie</h4>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
                   </div>
-                  <div class="col-md-2">
-                    <button class="btn btn-outline-secondary pr-3" type="submit" id="search-addon">{{buttonText}}</button>
-                  </div>
-                  <div class="col-md-3">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add</button>           
-                      <div class="modal fade" id="myModal">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Add Movie</h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                              <form>
-                                <div class="form-group">
-                                  <label for="movie">Movie Name:</label>
-                                  <input type="text" class="form-control" id="movie" placeholder="Enter Movie Name">
-                                </div>
-                                <div class="form-group">
-                                  <label for="director">Director:</label>
-                                  <input type="text" class="form-control" id="director" placeholder="Enter Director">
-                                </div>
-                                <div class="form-group">
-                                  <label for="year">Year:</label>
-                                  <input type="text" class="form-control" id="year" placeholder="Enter Year">
-                                </div>
-                              </form>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="submit" class="btn btn-primary">Send</button>
-                            </div>
-                          </div>
-                        </div>
+                  <div class='modal-body'>
+                    <form>
+                      <div class='form-group'>
+                        <label for='movie'>Movie Name:</label>
+                        <input type='text' class='form-control' id='movie' placeholder='Enter Movie Name' />
                       </div>
+                      <div class='form-group'>
+                        <label for='director'>Director:</label>
+                        <input type='text' class='form-control' id='director' placeholder='Enter Director' />
+                      </div>
+                      <div class='form-group'>
+                        <label for='year'>Year:</label>
+                        <input type='text' class='form-control' id='year' placeholder='Enter Year' />
+                      </div>
+                    </form>
+                  </div>
+                  <div class='modal-footer'>
+                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                    <button type='submit' class='btn btn-primary'>Send</button>
                   </div>
                 </div>
-              </form>
-            </script>
-
-           
-<!--   
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-
-
-            <!-- HTML element to display search bar -->
-            <div id="search-container"></div>
-        
-          </div>
-          <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-7Vwrg1fQ2ipRi+40HzVfhUnzz63v/y8VdPJTBxuH7Vzfl/0pwY8tjlWbytXhMqc3" crossorigin="anonymous"></script>
-          <script>
-            // Get the search bar template from the script element with id "search-template"
-            var searchBarTemplate = Handlebars.compile(document.getElementById("search-template").innerHTML);
-
-            // Define the data to be used in the search bar template
-            var searchData = {
-              placeholder: "Search...",
-              buttonText: "Go"
-            };
-
-            // Render the search bar template with the data and insert it into the HTML element with id "search-container"
-            document.getElementById("search-container").innerHTML = searchBarTemplate(searchData);
-          </script>
-
-          <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
-          <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
-
-          <h2 class="sub-header">Table of Movies</h2>
-          <div class="table-responsive">
-            <table class="table table-striped" id="myTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Movie Name</th>
-                  <th>Director</th>
-                  <th>Year</th>
-                  <th> </th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each rows}}
-                  <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.column1}}</td>
-                    <td>{{this.column2}}</td>
-                    <td>{{this.column3}}</td>
-                    <td>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="editRow('{{this.id}}')">Update</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow('{{this.id}}')">Delete</button>
-                      </div>
-                    </td>
-                  </tr>
-                {{/each}}
-                <tr>
-                  <td>1002</td>
-                  <td>Scott Pilgrim VS The World</td>
-                  <td>Edgar Wright</td>
-                  <td>2010</td>
-                  <td>
-                    <div class="btn-group" role="group">
-                      <button type="button" class="btn btn-primary btn-sm" onclick="editRow('1002')">Update</button>
-                      <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow('1002')">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-              </tbody>
-
-            <!-- Initialize DataTables using JavaScript -->
-            <script type="text/javascript">
-              $(document).ready(function() {
-                $('#myTable').DataTable({
-                  "order": [[0,asc]],
-                  "pagingType": "full",
-                });
-              });
-            </script>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </script>
+    <div id="search-container"></div>
+  </div>
+
+  <script>
+    // Get the search bar template from the script element with id "search-template"
+    var searchBarTemplate = Handlebars.compile(document.getElementById('search-template').innerHTML);
+
+    // Define the data to be used in the search bar template
+    var searchData = {
+      placeholder: 'Search...',
+      buttonText: 'Go',
+    };
+
+    // Render the search bar template with the data and insert it into the HTML element with id "search-container"
+    document.getElementById('search-container').innerHTML = searchBarTemplate(searchData);
+  </script>
+</div>
+
+<h2 class="sub-header">Table of Movies</h2>
+<div class="table-responsive">
+  <table class="table table-striped" id="myTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Movie Name</th>
+        <th>Director</th>
+        <th>Year</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each movies}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.column1}}</td>
+        <td>{{this.column2}}</td>
+        <td>{{this.column3}}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary btn-sm" onclick="editRow('{{this.id}}')">Update</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow('{{this.id}}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!-- Initialize DataTables using JavaScript -->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        order: [[0, asc]],
+        pagingType: 'full',
+      });
+    });
+  </script>
+</div>
