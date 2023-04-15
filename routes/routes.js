@@ -1,9 +1,9 @@
 const express = require('express');
+const adminController = require('../controllers/adminController');
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// test query to database and display on page
+app.get('/', adminController.index);
 
 module.exports = app;

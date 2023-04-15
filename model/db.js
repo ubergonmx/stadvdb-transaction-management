@@ -26,8 +26,37 @@ const node3 = mysql.createPool({
   database: process.env.NODE3_DB_NAME,
 });
 
-function connectDB() {
-  if (node1) {
+const db = {
+  connectDB: async () => {
+    try {
+      if (node1) {
+        await db.connectNode(node1);
+      }
+      if (node2) {
+        await db.connectNode(node2);
+      }
+      if (node3) {
+        await db.connectNode(node3);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  connectNode: async (node) => {
+    try {
+      node.getConnection((err) => {
+        if (err) {
+          console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
+          console.log(err);
+        } else {
+          console.log(`Connected to ${node.config.connectionConfig.database} database`);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  connectNode1: async () => {
     node1.getConnection((err) => {
       if (err) {
         console.log(`Error connecting to ${process.env.NODE1_DB_NAME} database`);
@@ -36,8 +65,8 @@ function connectDB() {
         console.log(`Connected to ${process.env.NODE1_DB_NAME} database`);
       }
     });
-  }
-  if (node2) {
+  },
+  connectNode2: async () => {
     node2.getConnection((err) => {
       if (err) {
         console.log(`Error connecting to ${process.env.NODE2_DB_NAME} database`);
@@ -46,8 +75,8 @@ function connectDB() {
         console.log(`Connected to ${process.env.NODE2_DB_NAME} database`);
       }
     });
-  }
-  if (node3) {
+  },
+  connectNode3: async () => {
     node3.getConnection((err) => {
       if (err) {
         console.log(`Error connecting to ${process.env.NODE3_DB_NAME} database`);
@@ -56,12 +85,43 @@ function connectDB() {
         console.log(`Connected to ${process.env.NODE3_DB_NAME} database`);
       }
     });
-  }
-}
+  },
+  localNode: () => {
+    try {
+      let node;
+      if (process.env.NODE_NUMBER === '1') {
+        node = node1;
+      } else if (process.env.NODE_NUMBER === '2') {
+        node = node2;
+      } else if (process.env.NODE_NUMBER === '3') {
+        node = node3;
+      } else {
+        node = undefined;
+      }
+      return node;
+    } catch (err) {
+      console.log(err);
+      return undefined;
+    }
+  },
+  query: async (query, node) => {
+    try {
+      node.query(query, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+};
 
 module.exports = {
   node1,
   node2,
   node3,
-  connectDB,
+  db,
 };

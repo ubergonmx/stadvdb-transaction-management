@@ -3,7 +3,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const morgan = require('morgan');
 const path = require('path');
-const { connectDB } = require('./model/db');
+const { db } = require('./model/db');
 
 // create express app
 const app = express();
@@ -40,7 +40,11 @@ app.use((req, res) => {
 });
 
 // connect to database
-connectDB();
+db.connectDB();
+setInterval(() => {
+  console.log('Checking local database connection');
+  db.connectNode(db.localNode());
+}, 5000);
 
 // start express server
 app.listen(port, () => {
