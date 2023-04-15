@@ -11,6 +11,29 @@ const adminController = {
       }
     });
   },
+  getMovies: (req, res) => {
+    db.localNode().query('SELECT * FROM movies', (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+    });
+  },
+  // performQuery: (req, res) => {
+
+  // }
 };
 
 module.exports = adminController;
+
+/*
+
+async function heavyTask(){
+  ...
+}
+
+doSomeWork();
+await heavyTask();
+
+*/
