@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {{!--
+    <link rel="shortcut icon" href="/img/site-icon/favicon.ico" type="image/x-icon" />
+    --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+    {{#each styles}}
+    <link rel="stylesheet" href="/css/{{this}}" />
+    {{/each}}
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w2ui@1.5.3/w2ui-1.5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/vast-engineering/jquery-popup-overlay@2/jquery.popupoverlay.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert/dist/sweetalert.min.js"></script>
+    {{#each scripts}}
+    <script src="/js/{{this}}"></script>
+    {{/each}}
+    <title>{{title}} - STADVDB MCO2</title>
+  </head>
+  <body>
+    {{{body}}}
+  </body>
+</html>

@@ -18,12 +18,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set view engine
-app.engine('handlebars', engine());
+app.engine(
+  'hbs',
+  engine({
+    extname: 'hbs',
+    defaultLayout: 'main',
+  })
+);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'));
 
 // set morgan to log HTTP requests
 app.use(morgan('dev'));
+
+// set routes
+app.use('/', require('./routes/routes'));
 
 // 404 page
 app.use((req, res) => {
