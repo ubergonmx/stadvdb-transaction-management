@@ -27,15 +27,13 @@ app.use(morgan('dev'));
 
 // 404 page
 app.use((req, res) => {
-    res.status(404).render('404');
-    }
-);
+  res.status(404).render('404');
+});
 
 // connect to database
 connectDB();
 
 // start express server
 app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-    }
-)
+  console.log(`Server started on port ${port}`);
+});
