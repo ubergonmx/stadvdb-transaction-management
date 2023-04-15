@@ -43,7 +43,7 @@ app.use((req, res) => {
 db.connectDB();
 setInterval(() => {
   console.log('Checking local database connection');
-  db.connectNode(db.localNode());
+  db.ping(db.localNode());
 }, 5000);
 
 // start express server

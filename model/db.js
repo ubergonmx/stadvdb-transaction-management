@@ -56,35 +56,20 @@ const db = {
       console.log(err);
     }
   },
-  connectNode1: async () => {
-    node1.getConnection((err) => {
-      if (err) {
-        console.log(`Error connecting to ${process.env.NODE1_DB_NAME} database`);
-        console.log(err);
-      } else {
-        console.log(`Connected to ${process.env.NODE1_DB_NAME} database`);
-      }
-    });
-  },
-  connectNode2: async () => {
-    node2.getConnection((err) => {
-      if (err) {
-        console.log(`Error connecting to ${process.env.NODE2_DB_NAME} database`);
-        console.log(err);
-      } else {
-        console.log(`Connected to ${process.env.NODE2_DB_NAME} database`);
-      }
-    });
-  },
-  connectNode3: async () => {
-    node3.getConnection((err) => {
-      if (err) {
-        console.log(`Error connecting to ${process.env.NODE3_DB_NAME} database`);
-        console.log(err);
-      } else {
-        console.log(`Connected to ${process.env.NODE3_DB_NAME} database`);
-      }
-    });
+  ping: async (node) => {
+    try {
+      node.getConnection((err, conn) => {
+        if (err) {
+          console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
+          console.log(err);
+        } else {
+          console.log(`Connected to ${node.config.connectionConfig.database} database`);
+        }
+        node.releaseConnection(conn);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   },
   localNode: () => {
     try {
