@@ -96,8 +96,8 @@
 
       <!-- Initialize DataTables using JavaScript -->
       <script type="text/javascript">
+        var movies = [];
         $(document).ready(function () {
-          var movies = [];
           $.ajax({
             url: '/api/getAllMovies',
             method: 'GET',
@@ -114,11 +114,12 @@
               console.log(movies);
             },
           });
+
           $('#moviesTable').DataTable({
             paging: true,
             ordering: true,
             searching: true,
-            data: movies,
+            ajax: '/api/getAllMovies',
             columns: [
               { data: 'id' },
               { data: 'name' },
