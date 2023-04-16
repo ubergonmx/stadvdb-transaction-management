@@ -30,30 +30,31 @@
       <div class="row">
         <!-- Left column for search input fields -->
         <div class="col-md-6">
+          <h2>Set Isolation Level</h2>
           <div class="row mb-3">
             <div class="col-md-12">
-              <button type="button" class="btn btn-primary btn-lg btn-block button1">Button 1</button>
+              <button type="button" class="btn btn-primary btn-lg btn-block button1">Read Uncommitted</button>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-12">
-              <button type="button" class="btn btn-success btn-lg btn-block button1">Button 2</button>
+              <button type="button" class="btn btn-success btn-lg btn-block button1">Read Committed</button>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-danger btn-lg btn-block button1">Button 3</button>
+              <button type="button" class="btn btn-danger btn-lg btn-block button1">Read Repeatable</button>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-yellow btn-lg btn-block">Button 4 hello</button>
+              <button type="button" class="btn btn-yellow btn-lg btn-block">Serializable</button>
             </div>
           </div>
         </div>
         <!-- Right column for add input fields and button -->
         <div class="col-md-6">
-          <p>ADD A MOVIE:</p>
+          <h2>Add a movie</h2>
           <form>
             <div class="form-group">
               <label for="movie">Movie:</label>
@@ -127,24 +128,15 @@
               {
                 data: 'id',
                 render: function (data, type, row, meta) {
+                  const url = `/movie/${data}`;
                   return (
-                    '<button class="btn btn-danger delete-button" data-id="' +
-                    data +
-                    '">Delete</button>' +
-                    '<button class="btn btn-primary edit-button" data-id="' +
-                    data +
-                    '">Edit</button>'
+                    '<button class="btn btn-primary edit-button" onclick="window.location =\'' +
+                    url +
+                    '\'">View</button>'
                   );
                 },
               },
             ],
-          });
-
-          $('#moviesTable tbody').on('click', 'tr', function () {
-            var data = table.row(this).data();
-            var url =
-              '/movieDetails.html?id=' + data.id + '&name=' + data.name + '&year=' + data.year + '&rank=' + data.rank;
-            window.location.href = url;
           });
         });
       </script>
