@@ -17,8 +17,30 @@ body {
 }
 
 .button1 {
-  margin-top: 20px;
+  margin-top: 10px;
 }
+
+.btn-yellow {
+  background-color: yellow;
+  color: black;
+  margin-top: 10px;
+}
+
+.btn-yellow:hover {
+  background-color: #ffff99;
+  color: black;
+}
+
+.btn-yellow:focus {
+  background-color: #ffff66;
+  color: black;
+}
+
+.btn-yellow:active {
+  background-color: #ffff33;
+  color: black;
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
