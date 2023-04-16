@@ -119,7 +119,10 @@
             paging: true,
             ordering: true,
             searching: true,
-            ajax: '/api/getAllMovies',
+            ajax: {
+              url: '/api/getAllMovies',
+              dataSrc: '',
+            },
             columns: [
               { data: 'id' },
               { data: 'name' },

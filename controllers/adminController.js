@@ -16,7 +16,7 @@ const adminController = {
             console.log(err);
             res.send(err);
           } else {
-            res.send(result);
+            res.json(result);
           }
         });
       } else {
@@ -39,7 +39,7 @@ const adminController = {
                           res.send(errNode);
                         } else {
                           movies = movies.concat(node3).sort((a, b) => a.id - b.id);
-                          res.send(movies);
+                          res.json(movies);
                         }
                       });
                     }
@@ -54,7 +54,7 @@ const adminController = {
                           res.send(errNode);
                         } else {
                           movies = movies.concat(node2).sort((a, b) => a.id - b.id);
-                          res.send(movies);
+                          res.json(movies);
                         }
                       });
                     }
