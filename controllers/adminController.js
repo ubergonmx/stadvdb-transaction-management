@@ -252,8 +252,11 @@ const adminController = {
           console.log(err);
           return res.json('Update to node1 failed (error)');
         }
+        let doSleep = '';
+        if (req.body.sleep) doSleep = `DO SLEEP (10);`;
+
         db.node1().query(
-          'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
+          `UPDATE movies SET name = ?, year= ?, \`rank\`= ? WHERE id = ?; ${doSleep} commit;`,
           [req.body.name, req.body.year, req.body.rank, req.params.id],
           (err2) => {
             if (err2) {
@@ -325,13 +328,19 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'delete');
         next();
       }
-      db.node1().query(`start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`, (err) => {
-        if (err) {
-          console.log(err);
-          return res.json('Delete from node1 failed (error)');
+      let doSleep = '';
+      if (req.body.sleep) doSleep = `DO SLEEP (10);`;
+
+      db.node1().query(
+        `start transaction; DELETE FROM movies WHERE id = ${req.params.id}; ${doSleep} commit;`,
+        (err) => {
+          if (err) {
+            console.log(err);
+            return res.json('Delete from node1 failed (error)');
+          }
+          return res.json('Delete from node1 successful');
         }
-        return res.json('Delete from node1 successful');
-      });
+      );
     });
   },
   deleteMovieNode2: (req, res, next) => {

@@ -19,6 +19,10 @@
               <h3 class="card-text">Rank: {{movie.rank}}</h3>
               <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#updateModal">Update</button>
               <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+              <div class="form-check form-check-inline ml-2">
+                <input type="checkbox" class="form-check-input" id="doSleep10" />
+                <label class="form-check-label" for="doSleep10">Do Sleep 10</label>
+              </div>
             </div>
           </div>
         </div>
@@ -119,7 +123,8 @@
       data: {
         name: movie,
         year: year,
-        rank: rank
+        rank: rank,
+        sleep: $('#doSleep10').is(':checked')
       },
       success: function(result) {
         window.location.replace("/movie/" + id);
@@ -131,6 +136,9 @@
     var id = {{movie.id}};
     $.ajax({
       url: '/api/deleteMovie=' + id,
+      data: {
+        sleep: $('#doSleep10').is(':checked')
+      },
       type: 'DELETE',
       success: function(result) {
         window.location.replace("/");
