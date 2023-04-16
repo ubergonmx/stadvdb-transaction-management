@@ -1,4 +1,4 @@
-const { db } = require('../model/db');
+const db = require('../model/db');
 
 const adminController = {
   index: (req, res) => {

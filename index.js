@@ -3,7 +3,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const morgan = require('morgan');
 const path = require('path');
-const { db } = require('./model/db');
+const db = require('./model/db');
 
 // create express app
 const app = express();
