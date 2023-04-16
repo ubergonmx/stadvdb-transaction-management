@@ -68,83 +68,7 @@ const adminController = {
         });
       }
     });
-
-    // if (db.ping(db.node1())) {
-    //   db.node1().query('SELECT * FROM movies', (err, result) => {
-    //     if (err) {
-    //       console.log(err);
-    //       res.send(err);
-    //     } else {
-    //       res.send(result);
-    //     }
-    //   });
-    // } else if (db.ping(db.localNode())) {
-    //   db.localNode().query('SELECT * FROM movies', (err, result) => {
-    //     movies = result;
-    //     if (err) {
-    //       console.log(err);
-    //       res.send(err);
-    //     } else {
-    //       if (process.env.NODE_NUMBER === '2') {
-    //         if (db.ping(db.node3())) {
-    //           db.node3().query('SELECT * FROM movies', (errNode, node3) => {
-    //             if (errNode) {
-    //               console.log(errNode);
-    //               res.send(errNode);
-    //             } else {
-    //               movies = movies.concat(node3).sort((a, b) => a.id - b.id);
-    //             }
-    //           });
-    //         }
-    //       }
-    //       if (process.env.NODE_NUMBER === '3') {
-    //         if (db.ping(db.node2())) {
-    //           db.query('SELECT * FROM movies', (errNode, node2) => {
-    //             if (errNode) {
-    //               console.log(errNode);
-    //               res.send(errNode);
-    //             } else {
-    //               movies = movies.concat(node2).sort((a, b) => a.id - b.id);
-    //             }
-    //           });
-    //         }
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   res.send('No database connection');
-    // }
   },
-  // getMovie: (req, res, next) => {
-  //   db.ping(db.localNode(), (isLocalNodeUp) => {
-  //     if (!isLocalNodeUp) {
-  //       res.locals.NODE_NUMBER = process.env.NODE_NUMBER;
-  //       next();
-  //     }
-  //     db.localNode().query(
-  //       `start transaction; Select * from movies WHERE id = ${req.params.id}; commit;`,
-  //       (err, result) => {
-  //         if (err) {
-  //           console.log(err);
-  //           return res.render('movie', {
-  //             title: 'Movie error',
-  //             movie: { id: req.params.id, name : 'Movie not found', year: 'N/A', rating: 'N/A'},
-  //             styles: ['index.css'],
-  //           });
-  //         }
-  //         if (result.length === 0){
-  //           res.locals.NODE_NUMBER = process.env.NODE_NUMBER;
-  //           return next();
-  //         }
-  //         return res.render('movie', {
-  //           title: result.name,
-  //           movie: result,
-  //           styles: ['index.css'],
-  //         });
-  //       }
-  //     );
-  //   });
-  // },
   getMovieNode1: (req, res, next) => {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
@@ -250,25 +174,6 @@ const adminController = {
       );
     });
   },
-  // addMovie: (req, res, next) => {
-  //   db.ping(db.localNode(), (isLocalNodeUp) => {
-  //     if (!isLocalNodeUp) {
-  //       res.locals.NODE_NUMBER = process.env.NODE_NUMBER;
-  //       next();
-  //     }
-  //     db.localNode().query(
-  //       `start transaction; INSERT INTO movies (name, year, rank) VALUES (?, ?, ?); commit;`,
-  //       [req.body.name, req.body.year, req.body.rank],
-  //       (err) => {
-  //         if (err) {
-  //           console.log(err);
-  //           return res.json('Insert failed');
-  //         }
-  //         return res.json('Insert successful');
-  //       }
-  //     );
-  //   });
-  // },
   addMovieNode1: (req, res, next) => {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
@@ -330,25 +235,6 @@ const adminController = {
       );
     });
   },
-  // updateMovie: (req, res) => {
-  //   db.localNode().query(`start transaction; SELECT * FROM movies WHERE id = ${req.params.id};`, (err) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       db.localNode().query(
-  //         'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?; commit;',
-  //         [req.body.name, req.body.year, req.body.rank, req.params.id],
-  //         (err2) => {
-  //           if (err2) {
-  //             console.log(err2);
-  //           } else {
-  //             res.json('Update successful');
-  //           }
-  //         }
-  //       );
-  //     }
-  //   });
-  // },
   updateMovieNode1: (req, res, next) => {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
@@ -431,18 +317,6 @@ const adminController = {
       });
     });
   },
-  // deleteMovie: (req, res) => {
-  //   db.localNode().query(
-  //     `start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`,
-  //     (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //       } else {
-  //         res.json(result);
-  //       }
-  //     }
-  //   );
-  // },
   deleteMovieNode1: (req, res, next) => {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
