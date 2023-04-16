@@ -116,21 +116,28 @@ const adminController = {
     // }
   },
   getMovie: (req, res) => {
-    db.localNode().query(`SELECT * FROM movies WHERE id = ${req.params.id}`, (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(result);
+    db.localNode().query(
+      `start transaction; Select * from movies WHERE id = ${req.params.id}; commit;`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('index', {
+            title: result.name,
+            movie: result,
+            styles: ['index.css'],
+          });
+        }
       }
-    });
+    );
   },
   updateMovie: (req, res) => {
-    db.localNode().query(`SELECT * FROM movies WHERE id = ${req.params.id}`, (err) => {
+    db.localNode().query(`start transaction; SELECT * FROM movies WHERE id = ${req.params.id};`, (err) => {
       if (err) {
         console.log(err);
       } else {
         db.localNode().query(
-          'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?',
+          'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
           (err2) => {
             if (err2) {
@@ -144,13 +151,16 @@ const adminController = {
     });
   },
   deleteMovie: (req, res) => {
-    db.localNode().query(`DELETE FROM movies WHERE id = ${req.params.id}`, (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(result);
+    db.localNode().query(
+      `start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(result);
+        }
       }
-    });
+    );
   },
   getCount: (req, res) => {
     db.localNode().query('SELECT COUNT(*) FROM movies', (err, result) => {
