@@ -28,7 +28,8 @@ const adminController = {
           }
         });
       } else {
-        db.ping(db.localNode(), (isLocalNodeUp) => {
+        const node = process.env.NODE_NUMBER === '1' ? db.node2() : db.localNode();
+        db.ping(node, (isLocalNodeUp) => {
           if (isLocalNodeUp) {
             db.localNode().query('SELECT * FROM movies', (err, result) => {
               movies = result;
