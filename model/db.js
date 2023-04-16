@@ -62,13 +62,17 @@ const db = {
         if (err) {
           console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
           console.log(err);
-        } else {
-          console.log(`Connected to ${node.config.connectionConfig.database} database`);
+          node.releaseConnection(conn);
+          return false;
         }
+        console.log(`Connected to ${node.config.connectionConfig.database} database`);
         node.releaseConnection(conn);
+        return true;
       });
+      return false;
     } catch (err) {
       console.log(err);
+      return false;
     }
   },
   localNode: () => {
@@ -94,12 +98,15 @@ const db = {
       node.query(query, (err, result) => {
         if (err) {
           console.log(err);
-        } else {
-          console.log(result);
+          return undefined;
         }
+        console.log(result);
+        return result;
       });
+      return undefined;
     } catch (err) {
       console.log(err);
+      return undefined;
     }
   },
 };
