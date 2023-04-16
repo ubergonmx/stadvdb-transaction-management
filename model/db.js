@@ -1,7 +1,5 @@
 const mysql = require('mysql2');
 
-const util = require('util');
-
 const nodeEnv = process.env.NODE_ENV;
 
 const node1 = mysql.createPool({
@@ -98,23 +96,22 @@ const db = {
       return undefined;
     }
   },
-  query: async (query, node) => {
-    try {
-      const nodeQuery = util.promisify(node.query).bind(node);
-      await nodeQuery(query, (err, result) => {
-        if (err) {
-          console.log(err);
-          return undefined;
-        }
-        console.log(result);
-        return result;
-      });
-      return undefined;
-    } catch (err) {
-      console.log(err);
-      return undefined;
-    }
-  },
+  // query: async (query, node) => {
+  //   try {
+  //     const nodeQuery = util.promisify(node.query).bind(node);
+  //     await nodeQuery(query, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         return undefined;
+  //       }
+  //       return result;
+  //     });
+  //     return undefined;
+  //   } catch (err) {
+  //     console.log(err);
+  //     return undefined;
+  //   }
+  // },
 };
 
 module.exports = db;

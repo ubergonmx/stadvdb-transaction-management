@@ -15,28 +15,53 @@ const adminController = {
       }
     });
   },
-  getAllMovies: async (req, res) => {
+  getAllMovies: (req, res) => {
     let movies;
     if (db.ping(db.node1())) {
-      movies = await db.query('SELECT * FROM movies', db.node1());
+      db.node1().query('SELECT * FROM movies', (err, result) => {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          res.send(result);
+        }
+      });
     } else if (db.ping(db.localNode())) {
-      movies = await db.query('SELECT * FROM movies', db.localNode());
-
-      if (process.env.NODE_NUMBER === '2') {
-        if (db.ping(db.node3())) {
-          movies = movies.concat(await db.query('SELECT * FROM movies', db.node3())).sort((a, b) => a.id - b.id);
+      db.localNode().query('SELECT * FROM movies', (err, result) => {
+        movies = result;
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          if (process.env.NODE_NUMBER === '2') {
+            if (db.ping(db.node3())) {
+              db.node3().query('SELECT * FROM movies', (errNode, node3) => {
+                if (errNode) {
+                  console.log(errNode);
+                  res.send(errNode);
+                } else {
+                  movies = movies.concat(node3).sort((a, b) => a.id - b.id);
+                }
+              });
+            }
+          }
+          if (process.env.NODE_NUMBER === '3') {
+            if (db.ping(db.node2())) {
+              db.query('SELECT * FROM movies', (errNode, node2) => {
+                if (errNode) {
+                  console.log(errNode);
+                  res.send(errNode);
+                } else {
+                  movies = movies.concat(node2).sort((a, b) => a.id - b.id);
+                }
+              });
+            }
+          }
         }
-      }
-      if (process.env.NODE_NUMBER === '3') {
-        if (db.ping(db.node2())) {
-          movies = movies.concat(await db.query('SELECT * FROM movies', db.node2())).sort((a, b) => a.id - b.id);
-        }
-      }
+      });
     } else {
-      movies = [];
+      res.send('No database connection');
     }
-
-    res.send(movies);
   },
   getMovie: (req, res) => {
     db.localNode().query(`SELECT * FROM movies WHERE id = ${req.params.id}`, (err, result) => {
