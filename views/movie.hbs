@@ -1,0 +1,35 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">IMDB</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <form class="navbar-form navbar-right"></form>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="container">
+    <div class="container mt-4">
+      <h1 class="page-header">Movie Details</h1>
+      <div class="row align-items-center">
+        <!-- Left column for movie image -->
+        <div class="col-md-4">
+          <img src="https://via.placeholder.com/350x400" class="img-fluid mx-auto d-block" alt="Movie Poster" />
+        </div>
+        <!-- Right column for movie details -->
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">ID: {{id}}</h2>
+              <h2 class="card-text">Name: {{name}}</h2>
+              <h3 class="card-text">Year: {{year}}</h3>
+              <h3 class="card-text">Rank:{{rank}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
