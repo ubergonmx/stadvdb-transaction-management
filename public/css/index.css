@@ -16,6 +16,9 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+.button1 {
+  margin-top: 20px;
+}
 /*
  * Top navigation
  * Hide default border to remove 1px line.
