@@ -376,11 +376,13 @@ const adminController = {
     });
   },
   setIsolationLevel: (req, res) => {
-    db.localNode().query(`SET SESSION TRANSACTION ISOLATION LEVEL ${req.params.level}`, (err, result) => {
+    db.localNode().query(`SET SESSION TRANSACTION ISOLATION LEVEL ${req.params.level}`, (err) => {
       if (err) {
         console.log(err);
+        res.json('Error setting isolation level');
       } else {
-        res.json(result);
+        console.log(`Isolation level set to ${req.params.level}`);
+        res.json('Isolation level set');
       }
     });
   },

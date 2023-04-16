@@ -221,23 +221,6 @@ const db = {
       console.log(err);
     }
   },
-
-  // query: async (query, node) => {
-  //   try {
-  //     const nodeQuery = util.promisify(node.query).bind(node);
-  //     await nodeQuery(query, (err, result) => {
-  //       if (err) {
-  //         console.log(err);
-  //         return undefined;
-  //       }
-  //       return result;
-  //     });
-  //     return undefined;
-  //   } catch (err) {
-  //     console.log(err);
-  //     return undefined;
-  //   }
-  // },
   listenLocalNode: () => {
     try {
       setInterval(() => {
