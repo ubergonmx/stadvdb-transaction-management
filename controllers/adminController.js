@@ -28,16 +28,17 @@ const adminController = {
           }
         });
       } else {
+        const isCentralNodeDown = process.env.NODE_NUMBER === '1';
         const node = process.env.NODE_NUMBER === '1' ? db.node2() : db.localNode();
         db.ping(node, (isLocalNodeUp) => {
           if (isLocalNodeUp) {
-            db.localNode().query('SELECT * FROM movies', (err, result) => {
+            node.query('SELECT * FROM movies', (err, result) => {
               movies = result;
               if (err) {
                 console.log(err);
                 res.send(err);
               } else {
-                if (process.env.NODE_NUMBER === '2') {
+                if (process.env.NODE_NUMBER === '2' || isCentralNodeDown) {
                   db.ping(db.node3(), (isNode3Up) => {
                     if (isNode3Up) {
                       db.node3().query('SELECT * FROM movies', (errNode, node3) => {

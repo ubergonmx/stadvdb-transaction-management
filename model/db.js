@@ -132,7 +132,7 @@ const db = {
           }
           if (localNodeStatus.isLocalNodeDown && localNodeStatus.runRecovery && isServerUp) {
             console.log('Attempting to recover local database connection');
-            // do recovery
+            // do recovery - check logs of other nodes and see if they have any logs that are not in the local node
             localNodeStatus.isLocalNodeDown = false;
             localNodeStatus.runRecovery = false;
           }
