@@ -75,6 +75,9 @@ const db = {
       return false;
     }
   },
+  node1: () => node1,
+  node2: () => node2,
+  node3: () => node3,
   localNode: () => {
     try {
       let node;
@@ -111,9 +114,4 @@ const db = {
   },
 };
 
-module.exports = {
-  node1,
-  node2,
-  node3,
-  db,
-};
+module.exports = db;
