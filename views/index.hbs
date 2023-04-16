@@ -98,23 +98,6 @@
       <script type="text/javascript">
         var movies = [];
         $(document).ready(function () {
-          $.ajax({
-            url: '/api/getAllMovies',
-            method: 'GET',
-            processData: false,
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-              for (const movie of data) {
-                let movieArray = [];
-                for (const val of Object.values(movie)) {
-                  movieArray.push(val ? val.toString() : '');
-                }
-                movies.push(movieArray);
-              }
-              console.log(movies);
-            },
-          });
-
           $('#moviesTable').DataTable({
             paging: true,
             ordering: true,
