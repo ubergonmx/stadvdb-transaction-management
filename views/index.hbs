@@ -97,14 +97,28 @@
       <!-- Initialize DataTables using JavaScript -->
       <script type="text/javascript">
         $(document).ready(function () {
+          var movies = [];
+          $.ajax({
+            url: '/api/getAllMovies',
+            method: 'GET',
+            processData: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+              for (const movie of data) {
+                let movieArray = [];
+                for (const val of Object.values(movie)) {
+                  movieArray.push(val ? val.toString() : '');
+                }
+                movies.push(movieArray);
+              }
+              console.log(movies);
+            },
+          });
           $('#moviesTable').DataTable({
             paging: true,
             ordering: true,
             searching: true,
-            ajax: {
-              url: '/api/getAllMovies',
-              dataSrc: 'data',
-            },
+            data: movies,
             columns: [
               { data: 'id' },
               { data: 'name' },
