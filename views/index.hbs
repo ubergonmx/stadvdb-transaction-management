@@ -25,134 +25,108 @@
 <div class="container mt-4">
   <h1 class="page-header">Movie Database</h1>
   <div>
-    <!-- Handlebars template for search bar -->
-    <script id="search-template" type="text/x-handlebars-template">
-      <form>
-        <div class='input-group'>
-          <div class='col-md-10'>
-            <input
-              type='text'
-              class='form-control'
-              placeholder='{{placeholder}}'
-              aria-label='Search'
-              aria-describedby='search-addon'
-            />
-          </div>
-          <div class='col-md-2'>
-            <button class='btn btn-outline-secondary pr-3' type='submit' id='search-addon'>{{buttonText}}</button>
-          </div>
-          <div class='col-md-3'>
-            <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Add</button>
-            <div class='modal fade' id='myModal'>
-              <div class='modal-dialog'>
-                <div class='modal-content'>
-                  <div class='modal-header'>
-                    <h4 class='modal-title'>Add Movie</h4>
-                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
-                  </div>
-                  <div class='modal-body'>
-                    <form>
-                      <div class='form-group'>
-                        <label for='movie'>Movie Name:</label>
-                        <input type='text' class='form-control' id='movie' placeholder='Enter Movie Name' />
-                      </div>
-                      <div class='form-group'>
-                        <label for='year'>Year:</label>
-                        <input type='text' class='form-control' id='year' placeholder='Enter Year' />
-                      </div>
-                      <div class='form-group'>
-                        <label for='rank'>Rank:</label>
-                        <input type='text' class='form-control' id='rank' placeholder='Enter Rank' />
-                      </div>
-                    </form>
-                  </div>
-                  <div class='modal-footer'>
-                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
-                    <button type='submit' class='btn btn-primary'>Send</button>
-                  </div>
-                </div>
+    <!-- SEARCH AND ADD INPUT FIELDS -->
+    <div class="container">
+      <div class="row">
+        <!-- Left column for search input fields -->
+        <div class="col-md-6">
+          <form>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search..." />
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Go</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
-      </form>
-    </script>
-    <div id="search-container"></div>
+        <!-- Right column for add input fields and button -->
+        <div class="col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="movie">Movie:</label>
+              <input type="text" class="form-control" id="movie" placeholder="Enter Movie Name" />
+            </div>
+            <div class="form-group">
+              <label for="year">Year:</label>
+              <input type="text" class="form-control" id="year" placeholder="Enter Year" />
+            </div>
+            <div class="form-group">
+              <label for="rank">Rank:</label>
+              <input type="text" class="form-control" id="rank" placeholder="Enter Rank" />
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-primary">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    // Get the search bar template from the script element with id "search-template"
-    var searchBarTemplate = Handlebars.compile(document.getElementById('search-template').innerHTML);
+  <div>
+    <h2 class="sub-header">Table of Movies</h2>
+    <div class="table-responsive">
+      <table class="table table-striped" id="moviesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Movie Name</th>
+            <th>Year</th>
+            <th>Rank</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{!-- {{#each rows}}
+          <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.column1}}</td>
+            <td>{{this.column2}}</td>
+            <td>{{this.column3}}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary btn-sm" onclick="editRow('{{this.id}}')">Update</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow('{{this.id}}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+          {{/each}} --}}
+        </tbody>
+      </table>
 
-    // Define the data to be used in the search bar template
-    var searchData = {
-      placeholder: 'Search...',
-      buttonText: 'Go',
-    };
-
-    // Render the search bar template with the data and insert it into the HTML element with id "search-container"
-    document.getElementById('search-container').innerHTML = searchBarTemplate(searchData);
-  </script>
-</div>
-
-<h2 class="sub-header">Table of Movies</h2>
-<div class="table-responsive">
-  <table class="table table-striped" id="moviesTable">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Movie Name</th>
-        <th>Year</th>
-        <th>Rank</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each movies}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.name}}</td>
-        <td>{{this.year}}</td>
-        <td>{{this.rank}}</td>
-        <td>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary btn-sm" onclick="editRow('{{this.id}}')">Update</button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow('{{this.id}}')">Delete</button>
-          </div>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-
-  <!-- Initialize DataTables using JavaScript -->
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $('#moviesTable').DataTable({
-        ajax: {
-          url: '/moviesData',
-          dataSrc: 'data',
-        },
-        columns: [
-          { data: 'id' },
-          { data: 'name' },
-          { data: 'year' },
-          { data: 'rank' },
-          {
-            data: 'id',
-            render: function (data, type, row, meta) {
-              return (
-                '<button class="btn btn-danger delete-button" data-id="' +
-                data +
-                '">Delete</button>' +
-                '<button class="btn btn-primary edit-button" data-id="' +
-                data +
-                '">Edit</button>'
-              );
+      <!-- Initialize DataTables using JavaScript -->
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $('#moviesTable').DataTable({
+            paging: true,
+            ordering: true,
+            searching: true,
+            ajax: {
+              url: '/api/getAllMovies',
+              dataSrc: 'data',
             },
-          },
-        ],
-      });
-    });
-  </script>
+            columns: [
+              { data: 'id' },
+              { data: 'name' },
+              { data: 'year' },
+              { data: 'rank' },
+              {
+                data: 'id',
+                render: function (data, type, row, meta) {
+                  return (
+                    '<button class="btn btn-danger delete-button" data-id="' +
+                    data +
+                    '">Delete</button>' +
+                    '<button class="btn btn-primary edit-button" data-id="' +
+                    data +
+                    '">Edit</button>'
+                  );
+                },
+              },
+            ],
+          });
+        });
+      </script>
+    </div>
+  </div>
 </div>
