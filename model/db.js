@@ -64,15 +64,17 @@ const db = {
       console.log(err);
     }
   },
-  ping: async (node) => {
+  ping: (node, callback = undefined) => {
     try {
       node.getConnection((err, conn) => {
         if (err) {
           console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
+          if (callback) callback(false);
           return false;
         }
         console.log(`Connected to ${node.config.connectionConfig.database} database`);
         node.releaseConnection(conn);
+        if (callback) callback(true);
         return true;
       });
       return false;
@@ -122,14 +124,19 @@ const db = {
     try {
       setInterval(() => {
         console.log('Checking local database connection');
-        if (!localNodeStatus.isLocalNodeDown && !db.ping(db.localNode())) {
-          localNodeStatus.isLocalNodeDown = true;
-          localNodeStatus.runRecovery = true;
-          console.log('Local database connection is down');
-        }
-        if (localNodeStatus.isLocalNodeDown && localNodeStatus.runRecovery && db.ping(db.localNode())) {
-          console.log('Attempting to recover local database connection');
-        }
+        db.ping(db.localNode(), (isServerUp) => {
+          if (!localNodeStatus.isLocalNodeDown && !isServerUp) {
+            localNodeStatus.isLocalNodeDown = true;
+            localNodeStatus.runRecovery = true;
+            console.log('Local database connection is down');
+          }
+          if (localNodeStatus.isLocalNodeDown && localNodeStatus.runRecovery && isServerUp) {
+            console.log('Attempting to recover local database connection');
+            // do recovery
+            localNodeStatus.isLocalNodeDown = false;
+            localNodeStatus.runRecovery = false;
+          }
+        });
       }, 5000);
     } catch (err) {
       console.log(err);
