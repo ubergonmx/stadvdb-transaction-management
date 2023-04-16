@@ -10,6 +10,7 @@ const node1 = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.NODE1_DB_NAME,
+  multipleStatements: true,
 });
 
 const node2 = mysql.createPool({
@@ -18,6 +19,7 @@ const node2 = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.NODE2_DB_NAME,
+  multipleStatements: true,
 });
 
 const node3 = mysql.createPool({
@@ -26,6 +28,7 @@ const node3 = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.NODE3_DB_NAME,
+  multipleStatements: true,
 });
 
 const db = {
