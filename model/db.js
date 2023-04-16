@@ -1,5 +1,7 @@
 const mysql = require('mysql2');
 
+const util = require('util');
+
 const nodeEnv = process.env.NODE_ENV;
 
 const node1 = mysql.createPool({
@@ -98,7 +100,8 @@ const db = {
   },
   query: async (query, node) => {
     try {
-      node.query(query, (err, result) => {
+      const nodeQuery = util.promisify(node.query).bind(node);
+      await nodeQuery(query, (err, result) => {
         if (err) {
           console.log(err);
           return undefined;
