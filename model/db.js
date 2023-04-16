@@ -104,6 +104,124 @@ const db = {
       return undefined;
     }
   },
+  node1DownLog: (body, operation) => {
+    try {
+      if (body.rank < 1980) {
+        let query = '';
+        let values = '';
+        if (operation === 'add') {
+          query = 'INSERT INTO node2_log (query) VALUES (?)';
+          values = [`INSERT INTO movies (name, year, rank) VALUES ('${body.name}', '${body.year}', '${body.rank}');`];
+        }
+        if (operation === 'update') {
+          query = 'INSERT INTO node2_log (query) VALUES (?)';
+          values = [
+            `UPDATE movies SET name = '${body.name}', year = '${body.year}', rank = '${body.rank}' WHERE id = ${body.id};`,
+          ];
+        }
+        if (operation === 'delete') {
+          query = 'INSERT INTO node2_log (query) VALUES (?)';
+          values = [`DELETE FROM movies WHERE id = ${body.id};`];
+        }
+        db.node2().query(query, values, (err) => {
+          if (err) {
+            console.log('Insert node2 log (node1 down) failed');
+            console.log(err);
+            return;
+          }
+          console.log('Insert node2 log (node1 down) successful');
+        });
+      } else {
+        let query = '';
+        let values = '';
+        if (operation === 'add') {
+          query = 'INSERT INTO node3_log (query) VALUES (?)';
+          values = [`INSERT INTO movies (name, year, rank) VALUES ('${body.name}', '${body.year}', '${body.rank}');`];
+        }
+        if (operation === 'update') {
+          query = 'INSERT INTO node3_log (query) VALUES (?)';
+          values = [
+            `UPDATE movies SET name = '${body.name}', year = '${body.year}', rank = '${body.rank}' WHERE id = ${body.id};`,
+          ];
+        }
+        if (operation === 'delete') {
+          query = 'INSERT INTO node3_log (query) VALUES (?)';
+          values = [`DELETE FROM movies WHERE id = ${body.id};`];
+        }
+        db.node3().query(query, values, (err) => {
+          if (err) {
+            console.log('Insert node3 log (node1 down) failed');
+            console.log(err);
+            return;
+          }
+          console.log('Insert node3 log (node1 down) successful');
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  node2DownLog: (body, operation) => {
+    try {
+      let query = '';
+      let values = '';
+      if (operation === 'add') {
+        query = 'INSERT INTO node2_log (query) VALUES (?)';
+        values = [`INSERT INTO movies (name, year, rank) VALUES ('${body.name}', '${body.year}', '${body.rank}');`];
+      }
+      if (operation === 'update') {
+        query = 'INSERT INTO node2_log (query) VALUES (?)';
+        values = [
+          `UPDATE movies SET name = '${body.name}', year = '${body.year}', rank = '${body.rank}' WHERE id = ${body.id};`,
+        ];
+      }
+      if (operation === 'delete') {
+        query = 'INSERT INTO node2_log (query) VALUES (?)';
+        values = [`DELETE FROM movies WHERE id = ${body.id};`];
+      }
+      db.node1().query(query, values, (err) => {
+        if (err) {
+          console.log('Insert node2 log (node2 down) failed');
+          console.log(err);
+          return;
+        }
+        console.log('Insert node2 log (node2 down) successful');
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  node3DownLog: (body, operation) => {
+    try {
+      let query = '';
+      let values = '';
+      if (operation === 'add') {
+        query = 'INSERT INTO node3_log (query) VALUES (?)';
+        values = [`INSERT INTO movies (name, year, rank) VALUES ('${body.name}', '${body.year}', '${body.rank}');`];
+      }
+      if (operation === 'update') {
+        query = 'INSERT INTO node3_log (query) VALUES (?)';
+        values = [
+          `UPDATE movies SET name = '${body.name}', year = '${body.year}', rank = '${body.rank}' WHERE id = ${body.id};`,
+        ];
+      }
+      if (operation === 'delete') {
+        query = 'INSERT INTO node3_log (query) VALUES (?)';
+        values = [`DELETE FROM movies WHERE id = ${body.id};`];
+      }
+      db.node1().query(query, values, (err) => {
+        if (err) {
+          console.log('Insert node3 log (node3 down) failed');
+          console.log(err);
+          return;
+        }
+        console.log('Insert node3 log (node3 down) successful');
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   // query: async (query, node) => {
   //   try {
   //     const nodeQuery = util.promisify(node.query).bind(node);
