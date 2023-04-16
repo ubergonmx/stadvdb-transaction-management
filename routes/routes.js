@@ -3,11 +3,13 @@ const adminController = require('../controllers/adminController');
 
 const app = express();
 
+// pages
 app.get('/', adminController.index);
+app.get('/movie/:id', adminController.getMovie);
 
 // API routes
 app.get('/api/getAllMovies', adminController.getAllMovies);
-app.get('/api/getMovie=:id', adminController.getMovie);
+// app.post('/api/addMovie', adminController.addMovie);
 app.post('/api/editMovie=:id', adminController.updateMovie);
 app.delete('/api/deleteMovie=:id', adminController.deleteMovie);
 
