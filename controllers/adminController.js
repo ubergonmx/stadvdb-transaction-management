@@ -383,7 +383,7 @@ const adminController = {
         res.json('Error setting isolation level');
       } else {
         console.log(`Isolation level set to ${req.params.level}`);
-        res.json('Isolation level set');
+        res.json(`Isolation level set to ${req.params.level}`);
       }
     });
   },

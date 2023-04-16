@@ -76,6 +76,10 @@
           </form>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-6" id="isolation-level"></div>
+        <div class="col-md-6" id="add-success"></div>
+      </div>
     </div>
   </div>
 
@@ -148,6 +152,15 @@
             type: 'POST',
             success: function (data) {
               console.log(data);
+              var msg = data;
+              var alertHTML =
+                '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                msg +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>';
+              $('#isolation-level').prepend(alertHTML);
             },
           });
         }
@@ -183,6 +196,15 @@
               console.log(data);
               $('#moviesTable').DataTable().ajax.reload();
               $('#add-form').trigger('reset');
+              var msg = data;
+              var alertHTML =
+                '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                msg +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>';
+              $('#add-success').prepend(alertHTML);
             },
           });
         }
