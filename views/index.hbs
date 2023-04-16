@@ -1,29 +1,7 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle collapsed"
-        data-toggle="collapse"
-        data-target="#navbar"
-        aria-expanded="false"
-        aria-controls="navbar"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">IMDB</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <form class="navbar-form navbar-right"></form>
-    </div>
-  </div>
-</nav>
+{{>navbar}}
 
 <div class="container mt-4">
-  <h1 class="page-header">Movie Database</h1>
+  <h1 class="page-header">Transaction Management</h1>
   <div>
     <!-- SEARCH AND ADD INPUT FIELDS -->
     <div class="container">
@@ -75,7 +53,7 @@
         <!-- Right column for add input fields and button -->
         <div class="col-md-6">
           <h2>Add a movie</h2>
-          <form>
+          <form id="add-form">
             <div class="form-group">
               <label for="movie">Movie:</label>
               <input type="text" class="form-control" id="movie" placeholder="Enter movie name" />
@@ -89,7 +67,7 @@
               <input type="text" class="form-control" id="rank" placeholder="Enter rank" />
             </div>
             <div class="text-center">
-              <button type="button" class="btn btn-primary">Add</button>
+              <button type="button" class="btn btn-primary" onclick="addMovie()">Add</button>
             </div>
           </form>
         </div>
@@ -166,6 +144,41 @@
             type: 'POST',
             success: function (data) {
               console.log(data);
+            },
+          });
+        }
+
+        function addMovie() {
+          const name = $('#movie').val();
+          const year = $('#year').val();
+          const rank = $('#rank').val();
+
+          //check if empty
+          if (name === '' || year === '' || rank === '') {
+            var errorMsg = 'Please fill in all fields.';
+            var alertHTML =
+              '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+              errorMsg +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+              '<span aria-hidden="true">&times;</span>' +
+              '</button>' +
+              '</div>';
+            $('#add-form').prepend(alertHTML);
+            return;
+          }
+
+          $.ajax({
+            url: '/api/addMovie',
+            type: 'POST',
+            data: {
+              name,
+              year,
+              rank,
+            },
+            success: function (data) {
+              console.log(data);
+              $('#moviesTable').DataTable().ajax.reload();
+              $('#add-form').trigger('reset');
             },
           });
         }

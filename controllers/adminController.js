@@ -181,17 +181,19 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'add');
         next();
       }
-      db.node1().query(
-        `start transaction; INSERT INTO movies (name, year, rank) VALUES (?, ?, ?); commit;`,
-        [req.body.name, req.body.year, req.body.rank],
-        (err) => {
-          if (err) {
-            console.log(err);
-            return res.json('Insert to node1 failed');
+      db.getLastId((lastId) => {
+        db.node1().query(
+          `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
+          [lastId + 1, req.body.name, req.body.year, req.body.rank],
+          (err) => {
+            if (err) {
+              console.log(err);
+              return res.json('Insert to node1 failed');
+            }
+            return res.json('Insert to node1 successful');
           }
-          return res.json('Insert to node1 successful');
-        }
-      );
+        );
+      });
     });
   },
   addMovieNode2: (req, res, next) => {
@@ -203,17 +205,19 @@ const adminController = {
         if (process.env.NODE_NUMBER === '2') db.node2DownLog(req.body, 'add');
         next();
       }
-      db.node2().query(
-        `start transaction; INSERT INTO movies (name, year, rank) VALUES (?, ?, ?); commit;`,
-        [req.body.name, req.body.year, req.body.rank],
-        (err) => {
-          if (err) {
-            console.log(err);
-            return res.json('Insert to node2 failed');
+      db.getLastId((lastId) => {
+        db.node2().query(
+          `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
+          [lastId + 1, req.body.name, req.body.year, req.body.rank],
+          (err) => {
+            if (err) {
+              console.log(err);
+              return res.json('Insert to node2 failed');
+            }
+            return res.json('Insert to node2 successful');
           }
-          return res.json('Insert to node2 successful');
-        }
-      );
+        );
+      });
     });
   },
   addMovieNode3: (req, res) => {
@@ -222,17 +226,19 @@ const adminController = {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'add');
         res.json('Insert failed');
       }
-      db.node3().query(
-        `start transaction; INSERT INTO movies (name, year, rank) VALUES (?, ?, ?); commit;`,
-        [req.body.name, req.body.year, req.body.rank],
-        (err) => {
-          if (err) {
-            console.log(err);
-            return res.json('Insert to node3 failed');
+      db.getLastId((lastId) => {
+        db.node3().query(
+          `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
+          [lastId + 1, req.body.name, req.body.year, req.body.rank],
+          (err) => {
+            if (err) {
+              console.log(err);
+              return res.json('Insert to node3 failed');
+            }
+            return res.json('Insert to node3 successful');
           }
-          return res.json('Insert to node3 successful');
-        }
-      );
+        );
+      });
     });
   },
   updateMovieNode1: (req, res, next) => {
