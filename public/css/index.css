@@ -21,7 +21,7 @@ body {
 }
 
 .btn-yellow {
-  background-color: yellow;
+  background-color: rgb(243, 243, 0);
   color: black;
   margin-top: 10px;
 }
