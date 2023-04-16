@@ -252,9 +252,7 @@ const adminController = {
           console.log(err);
           return res.json('Update to node1 failed (error)');
         }
-        let doSleep = '';
-        if (req.body.sleep) doSleep = `DO SLEEP (10);`;
-
+        const doSleep = req.body.sleep === 'true' ? 'DO SLEEP(10);' : '';
         db.node1().query(
           `UPDATE movies SET name = ?, year= ?, \`rank\`= ? WHERE id = ?; ${doSleep} commit;`,
           [req.body.name, req.body.year, req.body.rank, req.params.id],
@@ -328,9 +326,7 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'delete');
         next();
       }
-      let doSleep = '';
-      if (req.body.sleep) doSleep = `DO SLEEP (10);`;
-
+      const doSleep = req.body.sleep === 'true' ? 'DO SLEEP(10);' : '';
       db.node1().query(
         `start transaction; DELETE FROM movies WHERE id = ${req.params.id}; ${doSleep} commit;`,
         (err) => {
