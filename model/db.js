@@ -380,16 +380,16 @@ const db = {
           });
 
           if (localNodeStatus.runReplication) {
-            console.log('Attempting to replicate data from central node');
+            console.log(`Replicate data from central node to node ${process.env.NODE_NUMBER}`);
             // do replication
             // first check nodeX_log table to see if there are any logs
             node1.query(`SELECT * FROM node${process.env.NODE_NUMBER}_log`, (err, node1res) => {
               if (err) {
-                console.log('Get nodeX_log failed');
+                console.log(`Get node${process.env.NODE_NUMBER}_log failed`);
                 console.log(err);
                 return;
               }
-              console.log(`Get nodeX_log successful: ${node1res}`);
+              console.log(`Get node${process.env.NODE_NUMBER}_log successful: ${node1res}`);
               if (node1res.length > 0) {
                 node1res.forEach((log) => {
                   db.localNode().query(log.query, (errLogNode) => {
