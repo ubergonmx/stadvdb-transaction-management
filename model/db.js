@@ -2,6 +2,11 @@ const mysql = require('mysql2');
 
 const nodeEnv = process.env.NODE_ENV;
 
+const localNodeStatus = {
+  isLocalNodeDown: false,
+  runRecovery: false,
+};
+
 const node1 = mysql.createPool({
   host: nodeEnv === 'development' ? process.env.NODE_DB_HOST : process.env.NODE1_DB_HOST,
   port: nodeEnv === 'development' ? process.env.NODE1_DB_PORT : process.env.DB_PORT,
@@ -64,7 +69,6 @@ const db = {
       node.getConnection((err, conn) => {
         if (err) {
           console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
-          console.log(err);
           node.releaseConnection(conn);
           return false;
         }
@@ -115,6 +119,23 @@ const db = {
   //     return undefined;
   //   }
   // },
+  listenLocalNode: () => {
+    try {
+      setInterval(() => {
+        console.log('Checking local database connection');
+        if (!localNodeStatus.isLocalNodeDown && !db.ping(db.localNode())) {
+          localNodeStatus.isLocalNodeDown = true;
+          localNodeStatus.runRecovery = true;
+          console.log('Local database connection is down');
+        }
+        if (localNodeStatus.isLocalNodeDown && localNodeStatus.runRecovery && db.ping(db.localNode())) {
+          console.log('Attempting to recover local database connection');
+        }
+      }, 5000);
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 
 module.exports = db;

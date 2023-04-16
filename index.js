@@ -39,12 +39,9 @@ app.use((req, res) => {
   res.status(404).render('404');
 });
 
-// connect to database
+// connect to database and listen to local node if mysql server is down or not
 db.connectDB();
-setInterval(() => {
-  console.log('Checking local database connection');
-  db.ping(db.localNode());
-}, 5000);
+db.listenLocalNode();
 
 // start express server
 app.listen(port, () => {
