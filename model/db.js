@@ -69,7 +69,6 @@ const db = {
       node.getConnection((err, conn) => {
         if (err) {
           console.log(`Error connecting to ${node.config.connectionConfig.database} database`);
-          node.releaseConnection(conn);
           return false;
         }
         console.log(`Connected to ${node.config.connectionConfig.database} database`);
