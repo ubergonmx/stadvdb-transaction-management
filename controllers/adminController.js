@@ -1,3 +1,4 @@
+/* eslint consistent-return: "off" */
 const db = require('../model/db');
 
 const adminController = {
@@ -81,14 +82,14 @@ const adminController = {
             console.log(err);
             return res.render('movie', {
               title: 'Movie error',
-              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
               styles: ['index.css'],
             });
           }
           if (result[1].length === 0) {
             return res.render('movie', {
               title: 'Movie error',
-              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
               styles: ['index.css'],
             });
           }
@@ -116,7 +117,7 @@ const adminController = {
             console.log(err);
             return res.render('movie', {
               title: 'Movie error',
-              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
               styles: ['index.css'],
             });
           }
@@ -140,7 +141,7 @@ const adminController = {
       if (!isNode3Up) {
         res.render('movie', {
           title: 'Movie error',
-          movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+          movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
           styles: ['index.css'],
         });
       }
@@ -151,14 +152,14 @@ const adminController = {
             console.log(err);
             return res.render('movie', {
               title: 'Movie error',
-              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
               styles: ['index.css'],
             });
           }
           if (result[1].length === 0) {
             return res.render('movie', {
               title: 'Movie error',
-              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rating: 'N/A' },
+              movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
               styles: ['index.css'],
             });
           }
@@ -214,7 +215,6 @@ const adminController = {
         }
       );
     });
-    return res.send('Insert to node2 -return-');
   },
   addMovieNode3: (req, res) => {
     db.ping(db.node3(), (isNode3Up) => {
@@ -247,7 +247,7 @@ const adminController = {
           return res.json('Update to node1 failed (error)');
         }
         db.node1().query(
-          'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?; commit;',
+          'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
           (err2) => {
             if (err2) {
@@ -257,7 +257,6 @@ const adminController = {
             return res.json('Update to node1 successful');
           }
         );
-        return res.send('Update to node1 -return-');
       });
     });
   },
@@ -276,7 +275,7 @@ const adminController = {
           return res.json('Update to node2 failed (error)');
         }
         db.node2().query(
-          'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?; commit;',
+          'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
           (err2) => {
             if (err2) {
@@ -286,10 +285,8 @@ const adminController = {
             return res.json('Update to node2 successful');
           }
         );
-        return res.send('Update to node2 -return-');
       });
     });
-    return res.send('Update to node2 -return-');
   },
   updateMovieNode3: (req, res) => {
     db.ping(db.node3(), (isNode3Up) => {
@@ -303,7 +300,7 @@ const adminController = {
           return res.json('Update to node3 failed (error)');
         }
         db.node3().query(
-          'UPDATE movies SET name = ?, year= ?, rank= ? WHERE id = ?; commit;',
+          'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
           (err2) => {
             if (err2) {
@@ -313,7 +310,6 @@ const adminController = {
             return res.json('Update to node3 successful');
           }
         );
-        return res.send('Update to node3 -return-');
       });
     });
   },
@@ -349,7 +345,6 @@ const adminController = {
         return res.json('Delete from node2 successful');
       });
     });
-    return res.send('Delete from node2 -return-');
   },
   deleteMovieNode3: (req, res) => {
     db.ping(db.node3(), (isNode3Up) => {

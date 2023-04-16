@@ -10,7 +10,7 @@ app.get('/movie/:id', adminController.getMovieNode1, adminController.getMovieNod
 // API routes
 app.get('/api/getAllMovies', adminController.getAllMovies);
 app.post('/api/addMovie', adminController.addMovieNode1, adminController.addMovieNode2, adminController.addMovieNode3);
-app.post(
+app.put(
   '/api/editMovie=:id',
   adminController.updateMovieNode1,
   adminController.updateMovieNode2,

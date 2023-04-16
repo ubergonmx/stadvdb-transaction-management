@@ -26,7 +26,7 @@
               <h2 class="card-text">Name: {{movie.name}}</h2>
               <h3 class="card-text">Year: {{movie.year}}</h3>
               <h3 class="card-text">Rank: {{movie.rank}}</h3>
-              <button class="btn btn-primary mr-2">Update</button>
+              <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#updateModal">Update</button>
               <button class="btn btn-danger">Delete</button>
             </div>
           </div>
@@ -35,3 +35,64 @@
     </div>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update movie details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="updateForm">
+          <div class="form-group">
+            <label for="movie" class="col-form-label">Movie:</label>
+            <input type="text" class="form-control" id="movie" placeholder="Enter movie name" value="{{movie.name}}" />
+          </div>
+          <div class="form-group">
+            <label for="year" class="col-form-label">Year:</label>
+            <input type="text" class="form-control" id="year" placeholder="Enter year" value="{{movie.year}}" />
+          </div>
+          <div class="form-group">
+            <label for="rank" class="col-form-label">Rank:</label>
+            <input type="text" class="form-control" id="rank" placeholder="Enter rank" value="{{movie.rank}}" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateMovie()">Update movie</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function updateMovie(){
+    var movie = $('#movie').val();
+    var year = $('#year').val();
+    var rank = $('#rank').val();
+    var id = {{movie.id}};
+    $.ajax({
+      url: '/api/editMovie=' + id,
+      type: 'PUT',
+      data: {
+        name: movie,
+        year: year,
+        rank: rank
+      },
+      success: function(result) {
+        window.location.replace("/movie/" + id);
+      }
+    });
+  }
+</script>
