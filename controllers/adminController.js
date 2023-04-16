@@ -15,7 +15,7 @@ const adminController = {
       }
     });
   },
-  getMovies: (req, res) => {
+  getAllMovies: (req, res) => {
     let movies;
     if (db.ping(db.node1())) {
       movies = db.query('SELECT * FROM movies', db.node1());

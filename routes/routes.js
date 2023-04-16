@@ -6,7 +6,7 @@ const app = express();
 app.get('/', adminController.index);
 
 // API routes
-app.get('/api/getMovies', adminController.getMovies);
+app.get('/api/getAllMovies', adminController.getAllMovies);
 app.get('/api/getMovie=:id', adminController.getMovie);
 app.post('/api/editMovie=:id', adminController.updateMovie);
 app.delete('/api/deleteMovie=:id', adminController.deleteMovie);
