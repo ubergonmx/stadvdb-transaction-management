@@ -22,6 +22,7 @@ app.delete(
   adminController.deleteMovieNode2,
   adminController.deleteMovieNode3
 );
+app.post('/api/setIsolationLevel=:level', adminController.setIsolationLevel);
 
 // set isolation level to the following: 1=READ UNCOMMITTED, 2=READ COMMITTED, 3=REPEATABLE READ, 4=SERIALIZABLE
 app.post('/api/setIsolationLevel=:level', adminController.setIsolationLevel);

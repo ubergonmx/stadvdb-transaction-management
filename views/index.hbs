@@ -33,22 +33,42 @@
           <h2>Set Isolation Level</h2>
           <div class="row mb-3">
             <div class="col-md-12">
-              <button type="button" class="btn btn-primary btn-lg btn-block button1">Read Uncommitted</button>
+              <button
+                type="button"
+                class="btn btn-primary btn-lg btn-block button1"
+                onclick="setIsolationLevel('read uncommitted')"
+              >
+                Read Uncommitted
+              </button>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-12">
-              <button type="button" class="btn btn-success btn-lg btn-block button1">Read Committed</button>
+              <button
+                type="button"
+                class="btn btn-success btn-lg btn-block button1"
+                onclick="setIsolationLevel('read committed')"
+              >
+                Read Committed
+              </button>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-danger btn-lg btn-block button1">Read Repeatable</button>
+              <button
+                type="button"
+                class="btn btn-danger btn-lg btn-block button1"
+                onclick="setIsolationLevel('read repeatable')"
+              >
+                Read Repeatable
+              </button>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-yellow btn-lg btn-block">Serializable</button>
+              <button type="button" class="btn btn-yellow btn-lg btn-block" onclick="setIsolationLevel('serializable')">
+                Serializable
+              </button>
             </div>
           </div>
         </div>
@@ -139,6 +159,16 @@
             ],
           });
         });
+
+        function setIsolationLevel(isolationLevel) {
+          $.ajax({
+            url: '/api/setIsolationLevel=' + isolationLevel,
+            type: 'POST',
+            success: function (data) {
+              console.log(data);
+            },
+          });
+        }
       </script>
     </div>
   </div>
