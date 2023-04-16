@@ -47,7 +47,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-yellow btn-lg btn-block">Button 4</button>
+              <button type="button" class="btn btn-yellow btn-lg btn-block">Button 4 hello</button>
             </div>
           </div>
         </div>
@@ -138,6 +138,13 @@
                 },
               },
             ],
+          });
+
+          $('#moviesTable tbody').on('click', 'tr', function () {
+            var data = table.row(this).data();
+            var url =
+              '/movieDetails.html?id=' + data.id + '&name=' + data.name + '&year=' + data.year + '&rank=' + data.rank;
+            window.location.href = url;
           });
         });
       </script>
