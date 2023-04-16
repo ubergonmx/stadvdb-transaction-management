@@ -24,8 +24,32 @@ const adminController = {
       }
     });
   },
-  // performQuery: (req, res) => {
-
-  // }
+  editMovie: (req, res) => {
+    db.localNode().query(`SELECT * FROM movies WHERE id = ${req.params.id}`, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+    });
+  },
+  deleteMovie: (req, res) => {
+    db.localNode().query(`DELETE FROM movies WHERE id = ${req.params.id}`, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+    });
+  },
+  getCount: (req, res) => {
+    db.localNode().query('SELECT COUNT(*) FROM movies', (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+    });
+  },
 };
 module.exports = adminController;
