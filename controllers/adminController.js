@@ -181,6 +181,12 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'add');
         next();
       }
+      if (req.body.year >= 1980) {
+        db.node3DownLog(req.body, 'add');
+      } else if (req.body.year < 1980) {
+        db.node2DownLog(req.body, 'add');
+      }
+
       db.getLastId((lastId) => {
         db.node1().query(
           `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
@@ -247,6 +253,12 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'update');
         next();
       }
+      if (req.body.year >= 1980) {
+        db.node3DownLog(req.body, 'update');
+      } else if (req.body.year < 1980) {
+        db.node2DownLog(req.body, 'update');
+      }
+
       db.node1().query(`start transaction; SELECT * FROM movies WHERE id = ${req.params.id};`, (err) => {
         if (err) {
           console.log(err);
@@ -326,6 +338,12 @@ const adminController = {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'delete');
         next();
       }
+      if (req.body.year >= 1980) {
+        db.node3DownLog(req.body, 'delete');
+      } else if (req.body.year < 1980) {
+        db.node2DownLog(req.body, 'delete');
+      }
+
       const doSleep = req.body.sleep === 'true' ? 'DO SLEEP(10);' : '';
       db.node1().query(
         `start transaction; DELETE FROM movies WHERE id = ${req.params.id}; ${doSleep} commit;`,

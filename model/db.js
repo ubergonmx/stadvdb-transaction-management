@@ -4,7 +4,8 @@ const nodeEnv = process.env.NODE_ENV;
 
 const localNodeStatus = {
   isLocalNodeDown: false,
-  runRecovery: false,
+  runRecovery: false, // for node 1
+  runReplication: true, // for nodes 2 and 3
 };
 
 const node1 = mysql.createPool({
@@ -323,11 +324,101 @@ const db = {
           }
           if (localNodeStatus.isLocalNodeDown && localNodeStatus.runRecovery && isServerUp) {
             console.log('Attempting to recover local database connection');
-            // do recovery - check logs of other nodes and see if they have any logs that are not in the local node
+            // do recovery for node1 - check logs of node2 and node3 and see if they have any logs in nodeX_log table
+            // if they do, replicate the logs to local node
+            if (process.env.NODE_NUMBER === '1') {
+              node2.query('SELECT * FROM node2_log', (err, node2res) => {
+                if (err) {
+                  console.log('Get node2_log failed');
+                  console.log(err);
+                  return;
+                }
+                console.log(`Get node2_log successful: ${node2res}`);
+                if (node2res.length > 0) {
+                  node2res.forEach((log) => {
+                    node1.query(log.query, (errLogNode) => {
+                      if (errLogNode) {
+                        console.log('Replicate node2 log failed');
+                        console.log(errLogNode);
+                        return;
+                      }
+                      console.log('Replicate node2 log successful');
+                    });
+                  });
+                }
+              });
+              node3.query('SELECT * FROM node3_log', (err, node3res) => {
+                if (err) {
+                  console.log('Get node3_log failed');
+                  console.log(err);
+                  return;
+                }
+                console.log(`Get node3_log successful: ${node3res}`);
+                if (node3res.length > 0) {
+                  node3res.forEach((log) => {
+                    node1.query(log.query, (errLogNode) => {
+                      if (errLogNode) {
+                        console.log('Replicate node3 log failed');
+                        console.log(errLogNode);
+                        return;
+                      }
+                      console.log('Replicate node3 log successful');
+                    });
+                  });
+                }
+              });
+            }
             localNodeStatus.isLocalNodeDown = false;
             localNodeStatus.runRecovery = false;
           }
         });
+
+        // replication for node 2 and 3
+        if (!localNodeStatus.isLocalNodeDown && process.env.NODE_NUMBER !== '1') {
+          db.ping(node1, (isServerUp) => {
+            localNodeStatus.runReplication = isServerUp;
+          });
+
+          if (localNodeStatus.runReplication) {
+            console.log('Attempting to replicate data from central node');
+            // do replication
+            // first check nodeX_log table to see if there are any logs
+            node1.query(`SELECT * FROM node${process.env.NODE_NUMBER}_log`, (err, node1res) => {
+              if (err) {
+                console.log('Get nodeX_log failed');
+                console.log(err);
+                return;
+              }
+              console.log(`Get nodeX_log successful: ${node1res}`);
+              if (node1res.length > 0) {
+                node1res.forEach((log) => {
+                  db.localNode().query(log.query, (errLogNode) => {
+                    if (errLogNode) {
+                      console.log('Replication failed');
+                      console.log(errLogNode);
+                      return;
+                    }
+                    console.log('Replication successful');
+                    // delete log from nodeX_log table
+                    node1.query(
+                      `DELETE FROM node${process.env.NODE_NUMBER}_log WHERE id = ${log.id}`,
+                      (errDeleteLog) => {
+                        if (errDeleteLog) {
+                          console.log('Delete log failed');
+                          console.log(errDeleteLog);
+                          return;
+                        }
+                        console.log('Delete log successful');
+                      }
+                    );
+                  });
+                });
+              }
+            });
+
+            localNodeStatus.runReplication = false;
+          }
+        }
       }, 5000);
     } catch (err) {
       console.log(err);
