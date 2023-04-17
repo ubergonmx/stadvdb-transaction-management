@@ -48,7 +48,7 @@ const adminController = {
                 if (process.env.NODE_NUMBER === '3') {
                   db.ping(db.node2(), (isNode2Up) => {
                     if (isNode2Up) {
-                      db.query('SELECT * FROM movies', (errNode, node2) => {
+                      db.node2().query('SELECT * FROM movies', (errNode, node2) => {
                         if (errNode) {
                           console.log(errNode);
                           return res.send(errNode);
