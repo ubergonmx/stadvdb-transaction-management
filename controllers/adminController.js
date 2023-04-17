@@ -37,11 +37,10 @@ const adminController = {
                       db.node3().query('SELECT * FROM movies', (errNode, node3) => {
                         if (errNode) {
                           console.log(errNode);
-                          res.send(errNode);
-                        } else {
-                          movies = movies.concat(node3).sort((a, b) => a.id - b.id);
-                          res.json(movies);
+                          return res.send(errNode);
                         }
+                        movies = movies.concat(node3).sort((a, b) => a.id - b.id);
+                        return res.json(movies);
                       });
                     }
                   });
@@ -52,11 +51,10 @@ const adminController = {
                       db.query('SELECT * FROM movies', (errNode, node2) => {
                         if (errNode) {
                           console.log(errNode);
-                          res.send(errNode);
-                        } else {
-                          movies = movies.concat(node2).sort((a, b) => a.id - b.id);
-                          res.json(movies);
+                          return res.send(errNode);
                         }
+                        movies = movies.concat(node2).sort((a, b) => a.id - b.id);
+                        return res.json(movies);
                       });
                     }
                   });
@@ -73,7 +71,7 @@ const adminController = {
   getMovieNode1: (req, res, next) => {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
-        next();
+        return next();
       }
       db.node1().query(
         `start transaction; Select * from movies WHERE id = ${req.params.id}; commit;`,
@@ -96,7 +94,7 @@ const adminController = {
           const movie = Object.values({ ...result[1] })[0];
           console.log('-! node1');
           console.log(movie);
-          return res.render('movie', {
+          res.render('movie', {
             title: movie.name,
             movie,
             styles: ['index.css'],
@@ -108,7 +106,7 @@ const adminController = {
   getMovieNode2: (req, res, next) => {
     db.ping(db.node2(), (isNode2Up) => {
       if (!isNode2Up) {
-        next();
+        return next();
       }
       db.node2().query(
         `start transaction; Select * from movies WHERE id = ${req.params.id}; commit;`,
@@ -127,7 +125,7 @@ const adminController = {
           const movie = Object.values({ ...result[1] })[0];
           console.log('-! node2');
           console.log(movie);
-          return res.render('movie', {
+          res.render('movie', {
             title: movie.name,
             movie,
             styles: ['index.css'],
@@ -139,7 +137,7 @@ const adminController = {
   getMovieNode3: (req, res) => {
     db.ping(db.node3(), (isNode3Up) => {
       if (!isNode3Up) {
-        res.render('movie', {
+        return res.render('movie', {
           title: 'Movie error',
           movie: { id: req.params.id, name: 'Movie not found', year: 'N/A', rank: 'N/A' },
           styles: ['index.css'],
@@ -166,7 +164,7 @@ const adminController = {
           const movie = Object.values({ ...result[1] })[0];
           console.log('-! node3');
           console.log(movie);
-          return res.render('movie', {
+          res.render('movie', {
             title: movie.name,
             movie,
             styles: ['index.css'],
@@ -179,7 +177,7 @@ const adminController = {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'add');
-        next();
+        return next();
       }
       if (req.body.year >= 1980) {
         db.node3DownLog(req.body, 'add');
@@ -196,7 +194,7 @@ const adminController = {
               console.log(err);
               return res.json('Insert to node1 failed');
             }
-            return res.json('Insert to node1 successful');
+            res.json('Insert to node1 successful');
           }
         );
       });
@@ -209,7 +207,7 @@ const adminController = {
     db.ping(db.node2(), (isNode2Up) => {
       if (!isNode2Up) {
         if (process.env.NODE_NUMBER === '2') db.node2DownLog(req.body, 'add');
-        next();
+        return next();
       }
       db.getLastId((lastId) => {
         db.node2().query(
@@ -220,7 +218,7 @@ const adminController = {
               console.log(err);
               return res.json('Insert to node2 failed');
             }
-            return res.json('Insert to node2 successful');
+            res.json('Insert to node2 successful');
           }
         );
       });
@@ -230,7 +228,7 @@ const adminController = {
     db.ping(db.node3(), (isNode3Up) => {
       if (!isNode3Up) {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'add');
-        res.json('Insert failed');
+        return res.json('Insert failed');
       }
       db.getLastId((lastId) => {
         db.node3().query(
@@ -241,7 +239,7 @@ const adminController = {
               console.log(err);
               return res.json('Insert to node3 failed');
             }
-            return res.json('Insert to node3 successful');
+            res.json('Insert to node3 successful');
           }
         );
       });
@@ -251,7 +249,7 @@ const adminController = {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'update');
-        next();
+        return next();
       }
       if (req.body.year >= 1980) {
         db.node3DownLog(req.body, 'update');
@@ -273,7 +271,7 @@ const adminController = {
               console.log(err2);
               return res.json('Update to node1 failed');
             }
-            return res.json('Update to node1 successful');
+            res.json('Update to node1 successful');
           }
         );
       });
@@ -286,7 +284,7 @@ const adminController = {
     db.ping(db.node2(), (isNode2Up) => {
       if (!isNode2Up) {
         if (process.env.NODE_NUMBER === '2') db.node2DownLog(req.body, 'update');
-        next();
+        return next();
       }
       db.node2().query(`start transaction; SELECT * FROM movies WHERE id = ${req.params.id};`, (err) => {
         if (err) {
@@ -301,7 +299,7 @@ const adminController = {
               console.log(err2);
               return res.json('Update to node2 failed');
             }
-            return res.json('Update to node2 successful');
+            res.json('Update to node2 successful');
           }
         );
       });
@@ -311,7 +309,7 @@ const adminController = {
     db.ping(db.node3(), (isNode3Up) => {
       if (!isNode3Up) {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'update');
-        res.json('Update failed');
+        return res.json('Update failed');
       }
       db.node3().query(`start transaction; SELECT * FROM movies WHERE id = ${req.params.id};`, (err) => {
         if (err) {
@@ -326,7 +324,7 @@ const adminController = {
               console.log(err2);
               return res.json('Update to node3 failed');
             }
-            return res.json('Update to node3 successful');
+            res.json('Update to node3 successful');
           }
         );
       });
@@ -336,7 +334,7 @@ const adminController = {
     db.ping(db.node1(), (isNode1Up) => {
       if (!isNode1Up) {
         if (process.env.NODE_NUMBER === '1') db.node1DownLog(req.body, 'delete');
-        next();
+        return next();
       }
       if (req.body.year >= 1980) {
         db.node3DownLog(req.body, 'delete');
@@ -352,7 +350,7 @@ const adminController = {
             console.log(err);
             return res.json('Delete from node1 failed (error)');
           }
-          return res.json('Delete from node1 successful');
+          res.json('Delete from node1 successful');
         }
       );
     });
@@ -371,7 +369,7 @@ const adminController = {
           console.log(err);
           return res.json('Delete from node2 failed (error)');
         }
-        return res.json('Delete from node2 successful');
+        res.json('Delete from node2 successful');
       });
     });
   },
@@ -379,14 +377,14 @@ const adminController = {
     db.ping(db.node3(), (isNode3Up) => {
       if (!isNode3Up) {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'delete');
-        res.json('Delete failed');
+        return res.json('Delete failed');
       }
       db.node3().query(`start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`, (err) => {
         if (err) {
           console.log(err);
           return res.json('Delete from node3 failed (error)');
         }
-        return res.json('Delete from node3 successful');
+        res.json('Delete from node3 successful');
       });
     });
   },
@@ -394,6 +392,7 @@ const adminController = {
     db.localNode().query('SELECT COUNT(*) FROM movies', (err, result) => {
       if (err) {
         console.log(err);
+        res.json('Error getting count');
       } else {
         res.json(result);
       }

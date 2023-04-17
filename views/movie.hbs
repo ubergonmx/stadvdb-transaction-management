@@ -121,6 +121,7 @@
       url: '/api/editMovie=' + id,
       type: 'PUT',
       data: {
+        id: id,
         name: movie,
         year: year,
         rank: rank,
@@ -137,6 +138,7 @@
     $.ajax({
       url: '/api/deleteMovie=' + id,
       data: {
+        id: id,
         sleep: $('#doSleep10').is(':checked')
       },
       type: 'DELETE',

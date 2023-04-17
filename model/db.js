@@ -6,6 +6,7 @@ const localNodeStatus = {
   isLocalNodeDown: false,
   runRecovery: false, // for node 1
   runReplication: true, // for nodes 2 and 3
+  replicating: false,
 };
 
 const node1 = mysql.createPool({
@@ -390,7 +391,8 @@ const db = {
                 return;
               }
               console.log(`Get node${process.env.NODE_NUMBER}_log successful: ${node1res}`);
-              if (node1res.length > 0) {
+              if (node1res.length > 0 && !localNodeStatus.replicating) {
+                localNodeStatus.replicating = true;
                 node1res.forEach((log) => {
                   db.localNode().query(log.query, (errLogNode) => {
                     if (errLogNode) {
@@ -413,6 +415,7 @@ const db = {
                     );
                   });
                 });
+                localNodeStatus.replicating = false;
               }
             });
 
