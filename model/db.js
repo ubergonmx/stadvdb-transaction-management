@@ -108,7 +108,7 @@ const db = {
   },
   node1DownLog: (body, operation) => {
     try {
-      if (body.rank < 1980) {
+      if (body.year < 1980) {
         let query = '';
         let values = '';
         if (operation === 'add') {
