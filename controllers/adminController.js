@@ -209,6 +209,7 @@ const adminController = {
         if (process.env.NODE_NUMBER === '2') db.node2DownLog(req.body, 'add');
         return next();
       }
+      db.node1DownLog(req.body, 'add');
       db.getLastId((lastId) => {
         db.node2().query(
           `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
@@ -230,6 +231,7 @@ const adminController = {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'add');
         return res.json('Insert failed');
       }
+      db.node1DownLog(req.body, 'add');
       db.getLastId((lastId) => {
         db.node3().query(
           `start transaction; INSERT INTO movies (id, name, year, \`rank\`) VALUES (?, ?, ?, ?); commit;`,
@@ -291,6 +293,7 @@ const adminController = {
           console.log(err);
           return res.json('Update to node2 failed (error)');
         }
+        db.node1DownLog(req.body, 'update');
         db.node2().query(
           'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
@@ -316,6 +319,7 @@ const adminController = {
           console.log(err);
           return res.json('Update to node3 failed (error)');
         }
+        db.node1DownLog(req.body, 'update');
         db.node3().query(
           'UPDATE movies SET name = ?, year= ?, `rank`= ? WHERE id = ?; commit;',
           [req.body.name, req.body.year, req.body.rank, req.params.id],
@@ -364,6 +368,7 @@ const adminController = {
         if (process.env.NODE_NUMBER === '2') db.node2DownLog(req.body, 'delete');
         next();
       }
+      db.node1DownLog(req.body, 'delete');
       db.node2().query(`start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`, (err) => {
         if (err) {
           console.log(err);
@@ -379,6 +384,7 @@ const adminController = {
         if (process.env.NODE_NUMBER === '3') db.node3DownLog(req.body, 'delete');
         return res.json('Delete failed');
       }
+      db.node1DownLog(req.body, 'delete');
       db.node3().query(`start transaction; DELETE FROM movies WHERE id = ${req.params.id}; commit;`, (err) => {
         if (err) {
           console.log(err);
