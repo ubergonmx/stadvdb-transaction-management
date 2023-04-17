@@ -334,7 +334,7 @@ const db = {
                   console.log(err);
                   return;
                 }
-                console.log(`Get node2_log successful: ${node2res}`);
+                console.log(`Get node2_log successful: ${node2res.length} logs`);
                 if (node2res.length > 0) {
                   node2res.forEach((log) => {
                     node1.query(log.query, (errLogNode) => {
@@ -344,6 +344,14 @@ const db = {
                         return;
                       }
                       console.log('Replicate node2 log successful');
+                      node2.query('DELETE FROM node2_log WHERE id = ?', [log.id], (errDelete) => {
+                        if (errDelete) {
+                          console.log('Delete node2 log failed');
+                          console.log(errDelete);
+                          return;
+                        }
+                        console.log('Delete node2 log successful');
+                      });
                     });
                   });
                 }
@@ -354,7 +362,7 @@ const db = {
                   console.log(err);
                   return;
                 }
-                console.log(`Get node3_log successful: ${node3res}`);
+                console.log(`Get node3_log successful: ${node3res.length} logs`);
                 if (node3res.length > 0) {
                   node3res.forEach((log) => {
                     node1.query(log.query, (errLogNode) => {
@@ -364,6 +372,14 @@ const db = {
                         return;
                       }
                       console.log('Replicate node3 log successful');
+                      node3.query('DELETE FROM node3_log WHERE id = ?', [log.id], (errDelete) => {
+                        if (errDelete) {
+                          console.log('Delete node3 log failed');
+                          console.log(errDelete);
+                          return;
+                        }
+                        console.log('Delete node3 log successful');
+                      });
                     });
                   });
                 }
@@ -390,7 +406,7 @@ const db = {
                 console.log(err);
                 return;
               }
-              console.log(`Get node${process.env.NODE_NUMBER}_log successful: ${node1res}`);
+              console.log(`Get node${process.env.NODE_NUMBER}_log successful: ${node1res.length} logs`);
               if (node1res.length > 0 && !localNodeStatus.replicating) {
                 localNodeStatus.replicating = true;
                 node1res.forEach((log) => {
